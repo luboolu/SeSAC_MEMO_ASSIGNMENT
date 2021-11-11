@@ -28,7 +28,7 @@ class MemoAddViewController: UIViewController {
         navigationItem.rightBarButtonItem?.tintColor = UIColor(named: "MemoOrange")
         
         self.memoTextView.font = UIFont().binggraeMedium
-        self.memoTextView.textColor = .white
+        self.memoTextView.textColor = .black
         
 
 

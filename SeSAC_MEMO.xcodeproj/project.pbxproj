@@ -99,7 +99,6 @@
 				DCB6235E2739031400400A7C /* ViewController.swift */,
 				DCB623602739031400400A7C /* Main.storyboard */,
 				DCB623632739031500400A7C /* Assets.xcassets */,
-				DCB623652739031500400A7C /* LaunchScreen.storyboard */,
 				DCB623682739031500400A7C /* Info.plist */,
 			);
 			path = SeSAC_MEMO;
@@ -112,6 +111,7 @@
 				DCB6238C273A4B4B00400A7C /* MemoAdd.storyboard */,
 				DCB6238427393E8C00400A7C /* MemoTableViewHeader.xib */,
 				DCACD9BE273D25B700775088 /* MemoEdit.storyboard */,
+				DCB623652739031500400A7C /* LaunchScreen.storyboard */,
 			);
 			path = StoryBoard;
 			sourceTree = "<group>";

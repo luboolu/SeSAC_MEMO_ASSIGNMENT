@@ -10,6 +10,8 @@ import RealmSwift
 import SwiftUI
 
 class MemoListViewController: UIViewController {
+    
+    static let identifier = "MemoListViewController"
 
     
     @IBOutlet weak var memoListLabel: UILabel!
@@ -30,9 +32,9 @@ class MemoListViewController: UIViewController {
         
         //tableView NIB 등록
         tableView.register(UINib(nibName: "MemoTableViewHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "MemoTableViewHeader")
-        tasks = localRealm.objects(UserMemoList.self).sorted(byKeyPath: "date", ascending: true)
-        fixedTasks = localRealm.objects(UserMemoList.self).filter("isFixed == true")
-        notFixedTasks = localRealm.objects(UserMemoList.self).filter("isFixed == false")
+        tasks = localRealm.objects(UserMemoList.self).sorted(byKeyPath: "date", ascending: false)
+        fixedTasks = localRealm.objects(UserMemoList.self).filter("isFixed == true").sorted(byKeyPath: "date", ascending: false)
+        notFixedTasks = localRealm.objects(UserMemoList.self).filter("isFixed == false").sorted(byKeyPath: "date", ascending: false)
         
         //Realm 파일 위치
         print("Realm is loacaed at: ", localRealm.configuration.fileURL!)
@@ -58,6 +60,8 @@ class MemoListViewController: UIViewController {
         print(#function)
         //화면전환은 스토리보드에서 구현함
    
+
+        
     }
 
     
@@ -146,6 +150,25 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
         return UISwipeActionsConfiguration(actions:[delete])
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("MemoEdit으로 화면전환")
+        //선택된 셀의 메모를 편집할 수 있는 MemoEditViewController로의 화면전환
+        let storyBoard = UIStoryboard(name: "MemoEdit", bundle: nil)
+        
+        guard let vc = storyBoard.instantiateViewController(withIdentifier: MemoEditViewController.identifier) as? MemoEditViewController else { return }
+        
+        if indexPath.section == 0 {
+            vc.task = fixedTasks[indexPath.row]
+        } else {
+            vc.task = notFixedTasks[indexPath.row]
+        }
+        
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+
+        
+    }
+    
 
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -157,7 +180,7 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
             
             header.headerLabel.text = "고정된 메모"
             header.headerLabel.font = UIFont().binggraeBold
-            header.headerLabel.textColor = .white
+            header.headerLabel.textColor = .black
             
             return header
             
@@ -169,7 +192,7 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
             header.headerLabel.text = "메모"
             header.headerLabel.font = UIFont().binggraeBold
 
-            header.headerLabel.textColor = .white
+            header.headerLabel.textColor = .black
             
             return header
             
