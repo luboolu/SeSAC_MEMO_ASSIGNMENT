@@ -16,8 +16,22 @@ class MemoListViewController: UIViewController {
     
     @IBOutlet weak var memoListLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
+
+    @IBOutlet weak var searchView: UIView!
     
     let localRealm = try! Realm()
+    
+    let searchController: UISearchController = {
+        //let searchController = UISearchController(searchResultsController: UIStoryboard(name: "MemoSearch", bundle: nil).instantiateViewController(withIdentifier: MemoSearchViewController.identifier))
+        
+        let searchController = UISearchController(searchResultsController: nil)
+        
+        searchController.searchBar.placeholder = "Search"
+        
+        return searchController
+        
+    }()
+    
     
     var tasks: Results<UserMemoList>!
     var fixedTasks: Results<UserMemoList>!
@@ -32,6 +46,7 @@ class MemoListViewController: UIViewController {
         
         //tableView NIB 등록
         tableView.register(UINib(nibName: "MemoTableViewHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "MemoTableViewHeader")
+        
         tasks = localRealm.objects(UserMemoList.self).sorted(byKeyPath: "date", ascending: false)
         fixedTasks = localRealm.objects(UserMemoList.self).filter("isFixed == true").sorted(byKeyPath: "date", ascending: false)
         notFixedTasks = localRealm.objects(UserMemoList.self).filter("isFixed == false").sorted(byKeyPath: "date", ascending: false)
@@ -42,7 +57,19 @@ class MemoListViewController: UIViewController {
         //memoListLabel 설정
         memoListLabel.text = "\(tasks.count)개의 메모"
         memoListLabel.font = UIFont().binggraeBoldLarge
+        
+        
 
+        //search controller
+        //searchControllerSetting()
+        
+        navigationItem.searchController = searchController
+         
+        searchController.searchResultsUpdater  = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.searchBarStyle = UISearchBar.Style.prominent
+        searchController.searchBar.sizeToFit()
+ 
 
     }
     
@@ -55,16 +82,8 @@ class MemoListViewController: UIViewController {
         tableView.reloadData()
         print("====================")
     }
-
-    @IBAction func addMemoButton(_ sender: UIButton) {
-        print(#function)
-        //화면전환은 스토리보드에서 구현함
-   
-
-        
-    }
-
     
+ 
 }
 
 extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -253,3 +272,23 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
     
     
 }
+
+
+//SearchController 관련
+extension MemoListViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+
+        let result = localRealm.objects(UserMemoList.self).filter("content CONTAINS '\(searchController.searchBar.text!)'")
+        
+        print(result)
+        
+        
+    }
+
+    
+    
+}
+
+
+
