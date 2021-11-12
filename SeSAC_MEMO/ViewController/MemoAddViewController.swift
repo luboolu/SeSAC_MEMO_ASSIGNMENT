@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import MobileCoreServices
 
 class MemoAddViewController: UIViewController {
     
@@ -15,10 +16,7 @@ class MemoAddViewController: UIViewController {
     var task: UserMemoList! //Edit인 경우에 전달
     
     let localRealm = try! Realm()
-    
-    
-    
-    
+
     @IBOutlet weak var memoTextView: UITextView!
 
     
@@ -30,8 +28,16 @@ class MemoAddViewController: UIViewController {
         navigationItem.leftBarButtonItem?.tintColor = UIColor(named: "MemoOrange")
 
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(saveButtonClicked))
-        navigationItem.rightBarButtonItem?.tintColor = UIColor(named: "MemoOrange")
+
+        
+        let shareButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareButtonClicked))
+        shareButton.tintColor = UIColor(named: "MemoOrange")
+        
+        let completeButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(saveButtonClicked))
+        completeButton.tintColor = UIColor(named: "MemoOrange")
+        
+        navigationItem.rightBarButtonItems = [shareButton, completeButton]
+
         
         if task != nil {
             self.memoTextView.text = [task.title, task.content].joined(separator: "\n")
@@ -54,6 +60,14 @@ class MemoAddViewController: UIViewController {
         } else {
             self.dismiss(animated: true, completion: nil)
         }
+        
+    }
+    
+    @objc func shareButtonClicked() {
+        print(#function)
+        
+        let vc = UIActivityViewController(activityItems: ["\(memoTextView.text!)"], applicationActivities: [])
+        self.present(vc, animated: true, completion: nil)
         
     }
     
@@ -91,8 +105,11 @@ class MemoAddViewController: UIViewController {
 
 
             }
-            //self.dismiss(animated: true, completion: nil)
-            self.navigationController?.popViewController( animated: true)
+            if self.task != nil {
+                self.navigationController?.popViewController( animated: true)
+            } else {
+                self.dismiss(animated: true, completion: nil)
+            }
         }
     }
 
