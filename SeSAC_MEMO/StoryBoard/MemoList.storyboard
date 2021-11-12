@@ -24,7 +24,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="21T-9o-gau">
-                                <rect key="frame" x="0.0" y="194" width="414" height="647"/>
+                                <rect key="frame" x="0.0" y="150" width="414" height="691"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MemoTableViewCell" rowHeight="89" id="hGu-5J-GRa" customClass="MemoTableViewCell" customModule="SeSAC_MEMO" customModuleProvider="target">
@@ -100,39 +100,24 @@
                                 </items>
                                 <color key="barTintColor" systemColor="secondarySystemBackgroundColor"/>
                             </toolbar>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ctB-hy-UBO">
-                                <rect key="frame" x="0.0" y="150" width="414" height="44"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="UuT-gX-ZOb"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="21T-9o-gau" secondAttribute="trailing" id="1cZ-R3-MOp"/>
                             <constraint firstAttribute="bottom" secondItem="Yuj-bz-l3x" secondAttribute="bottom" id="52D-0H-aLZ"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="ctB-hy-UBO" secondAttribute="trailing" id="6PD-Ip-mgW"/>
-                            <constraint firstItem="ctB-hy-UBO" firstAttribute="top" secondItem="tTx-OH-LWg" secondAttribute="bottom" id="8wr-Qv-9xm"/>
-                            <constraint firstItem="21T-9o-gau" firstAttribute="top" secondItem="ctB-hy-UBO" secondAttribute="bottom" id="Ecm-Op-iSx"/>
                             <constraint firstItem="Yuj-bz-l3x" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="NYR-DQ-X3b"/>
-                            <constraint firstItem="ctB-hy-UBO" firstAttribute="top" secondItem="tTx-OH-LWg" secondAttribute="bottom" id="QkR-gL-SgF"/>
-                            <constraint firstItem="ctB-hy-UBO" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="bzc-z4-OwC"/>
                             <constraint firstItem="21T-9o-gau" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="eqK-5T-Y6m"/>
                             <constraint firstItem="Yuj-bz-l3x" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="fmL-01-YGW"/>
                             <constraint firstItem="tTx-OH-LWg" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="20" id="fqj-aw-TxE"/>
                             <constraint firstItem="Yuj-bz-l3x" firstAttribute="top" secondItem="21T-9o-gau" secondAttribute="bottom" id="lAY-Q4-JTy"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="ctB-hy-UBO" secondAttribute="trailing" id="uqI-S9-Ihb"/>
                             <constraint firstItem="tTx-OH-LWg" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="v6o-E1-Bav"/>
-                            <constraint firstItem="ctB-hy-UBO" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="ysE-0H-lSC"/>
-                            <constraint firstItem="21T-9o-gau" firstAttribute="top" secondItem="ctB-hy-UBO" secondAttribute="bottom" id="z50-AC-bJ8"/>
+                            <constraint firstItem="21T-9o-gau" firstAttribute="top" secondItem="tTx-OH-LWg" secondAttribute="bottom" id="ypF-aU-2Uu"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="MEMO" id="WGi-Dq-HEO"/>
                     <connections>
                         <outlet property="memoListLabel" destination="tTx-OH-LWg" id="YjY-my-5OH"/>
-                        <outlet property="searchView" destination="ctB-hy-UBO" id="AGJ-cQ-C3T"/>
                         <outlet property="tableView" destination="21T-9o-gau" id="vBq-aS-qka"/>
                     </connections>
                 </viewController>

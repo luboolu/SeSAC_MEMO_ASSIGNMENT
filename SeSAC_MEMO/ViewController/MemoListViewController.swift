@@ -17,20 +17,21 @@ class MemoListViewController: UIViewController {
     @IBOutlet weak var memoListLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
 
-    @IBOutlet weak var searchView: UIView!
-    
+
     let localRealm = try! Realm()
     
-    let searchController: UISearchController = {
-        //let searchController = UISearchController(searchResultsController: UIStoryboard(name: "MemoSearch", bundle: nil).instantiateViewController(withIdentifier: MemoSearchViewController.identifier))
-        
-        let searchController = UISearchController(searchResultsController: nil)
-        
-        searchController.searchBar.placeholder = "Search"
-        
-        return searchController
-        
-    }()
+    
+
+//    let searchController: UISearchController = {
+//        let searchController = UISearchController(searchResultsController: UIStoryboard(name: "MemoSearch", bundle: nil).instantiateViewController(withIdentifier: MemoSearchViewController.identifier))
+//
+//        //let searchController = UISearchController(searchResultsController: nil)
+//
+//        searchController.searchBar.placeholder = "Search"
+//
+//        return searchController
+//
+//    }()
     
     
     var tasks: Results<UserMemoList>!
@@ -61,19 +62,30 @@ class MemoListViewController: UIViewController {
         
 
         //search controller
-        //searchControllerSetting()
+        let storyboard = UIStoryboard(name: "MemoSearch", bundle: nil)
+        let resultsController = storyboard.instantiateViewController(withIdentifier: MemoSearchViewController.identifier) as! MemoSearchViewController
+        let searchController = UISearchController(searchResultsController: resultsController )
+ 
         
         navigationItem.searchController = searchController
-         
-        searchController.searchResultsUpdater  = self
+        
+//        let cancel = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction(handler: { _ in // cancel action ]
+//            print("search controller cancle")
+//        }))
+//        self.navigationItem.rightBarButtonItem = cancel
+//
+
+        searchController.searchResultsUpdater  = resultsController //searchResultsController를 사용하려면 self가 아니라 데이터를 보여줄 뷰 컨트롤러를 적어줘야함
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.searchBarStyle = UISearchBar.Style.prominent
         searchController.searchBar.sizeToFit()
+        searchController.searchBar.delegate = self
+        
  
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        print(#function)
         self.reloadView()
     }
     
@@ -156,8 +168,11 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
         let delete = UIContextualAction(style: .normal, title: "delete") { (UIContextualAction, UIView, success: @escaping (Bool) -> Void) in
             
             try! self.localRealm.write {
-
-                self.localRealm.delete(self.tasks[indexPath.row]) //realm이 먼저 지워지면 위험할 수 있다.
+                if indexPath.section == 0 {
+                    self.localRealm.delete(self.fixedTasks[indexPath.row])
+                } else {
+                    self.localRealm.delete(self.notFixedTasks[indexPath.row])
+                }
                 self.reloadView()
             }
 
@@ -183,9 +198,6 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         self.navigationController?.pushViewController(vc, animated: true)
-        
-
-        
     }
     
 
@@ -231,9 +243,7 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
             
             let row = fixedTasks[indexPath.row]
             
-            let format = DateFormatter()
-            format.dateFormat = "yyyy.MM.dd HH:mm"
-            
+
             //let date = format.string(from: row.date)
             let date = DateFormatter.customFormat.string(from: row.date)
             
@@ -274,21 +284,13 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 
-//SearchController 관련
-extension MemoListViewController: UISearchResultsUpdating {
+extension MemoListViewController: UISearchBarDelegate {
     
-    func updateSearchResults(for searchController: UISearchController) {
-
-        let result = localRealm.objects(UserMemoList.self).filter("content CONTAINS '\(searchController.searchBar.text!)'")
-        
-        print(result)
-        
-        
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        print(#function)
+        self.reloadView()
     }
-
-    
     
 }
-
 
 
