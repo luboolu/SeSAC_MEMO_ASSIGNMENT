@@ -33,13 +33,6 @@ extension DateFormatter {
         let date = DateFormatter()
         date.dateFormat = "yyyy.MM.dd HH:mm"
         
-        
-//        let now = convertDateToLocalTime(Date())
-//
-//        let startWeek = convertDateToLocalTime(now.startOfWeek!)
-//
-//        print("Start of week is: \(startWeek)")
-//
 
         return date
     }

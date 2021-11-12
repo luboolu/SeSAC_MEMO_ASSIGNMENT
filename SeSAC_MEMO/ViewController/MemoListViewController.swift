@@ -9,6 +9,18 @@ import UIKit
 import RealmSwift
 import SwiftUI
 
+class Tutorial {
+   static func isFirst() -> Bool {
+        let defaults = UserDefaults.standard
+        if defaults.object(forKey: "isFirst") == nil {
+            defaults.set(true, forKey:"isFirst")
+            return true
+        } else {
+            return false
+        }
+    }
+}
+
 class MemoListViewController: UIViewController {
     
     static let identifier = "MemoListViewController"
@@ -16,30 +28,29 @@ class MemoListViewController: UIViewController {
     
     @IBOutlet weak var memoListLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
-
+    
 
     let localRealm = try! Realm()
-    
-    
-
-//    let searchController: UISearchController = {
-//        let searchController = UISearchController(searchResultsController: UIStoryboard(name: "MemoSearch", bundle: nil).instantiateViewController(withIdentifier: MemoSearchViewController.identifier))
-//
-//        //let searchController = UISearchController(searchResultsController: nil)
-//
-//        searchController.searchBar.placeholder = "Search"
-//
-//        return searchController
-//
-//    }()
-    
     
     var tasks: Results<UserMemoList>!
     var fixedTasks: Results<UserMemoList>!
     var notFixedTasks: Results<UserMemoList>!
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let isFirst = Tutorial.isFirst() //앱 첫실행 감지
+
+        if isFirst {
+            
+            let storyBoard = UIStoryboard(name: "MemoTutorial", bundle: nil)
+            let vc = storyBoard.instantiateViewController(withIdentifier: MemoTutorialViewController.identifier) as! MemoTutorialViewController
+            
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc, animated: true, completion: nil)
+        }
         
         //Protocol
         tableView.delegate = self
@@ -56,9 +67,7 @@ class MemoListViewController: UIViewController {
         print("Realm is loacaed at: ", localRealm.configuration.fileURL!)
         
         //memoListLabel 설정
-        memoListLabel.text = "\(tasks.count)개의 메모"
-        memoListLabel.font = UIFont().binggraeBoldLarge
-        
+        memoListLabelSet()
         
 
         //search controller
@@ -82,9 +91,8 @@ class MemoListViewController: UIViewController {
     }
     
     func reloadView() {
-        memoListLabel.text = "\(tasks.count)개의 메모"
+        memoListLabelSet()
         tableView.reloadData()
-        print("====================")
     }
     
     func convertDateToLocalTime(_ date: Date) -> Date {
@@ -93,7 +101,15 @@ class MemoListViewController: UIViewController {
         return Calendar.current.date(byAdding: .second, value: Int(timeZoneOffset), to: date)!
     }
     
- 
+    func memoListLabelSet() {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        let price = tasks.count
+        let result = numberFormatter.string(for: price)!
+
+        memoListLabel.text = "\(result)개의 메모"
+        memoListLabel.font = UIFont().binggraeBoldLarge
+    }
 }
 
 extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -197,11 +213,10 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("MemoEdit으로 화면전환")
-        //선택된 셀의 메모를 편집할 수 있는 MemoEditViewController로의 화면전환
-        let storyBoard = UIStoryboard(name: "MemoEdit", bundle: nil)
+
+        let storyBoard = UIStoryboard(name: "MemoAdd", bundle: nil)
         
-        guard let vc = storyBoard.instantiateViewController(withIdentifier: MemoEditViewController.identifier) as? MemoEditViewController else { return }
+        guard let vc = storyBoard.instantiateViewController(withIdentifier: MemoAddViewController.identifier) as? MemoAddViewController else { return }
         
         if indexPath.section == 0 {
             vc.task = fixedTasks[indexPath.row]
@@ -209,6 +224,8 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
             vc.task = notFixedTasks[indexPath.row]
         }
         
+        //vc.modalPresentationStyle = .fullScreen
+        //self.present(vc, animated: true, completion: nil)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -260,14 +277,23 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
             let startWeek = convertDateToLocalTime(now.startOfWeek!)
             let memoDate = convertDateToLocalTime(row.date)
             
-            if startWeek < memoDate {
+            var day = Calendar.current
+            day.locale = Locale(identifier: "ko_KR")
+            day.timeZone = TimeZone(abbreviation: "KST")!
+            
+            //let today = day.isDateInToday(memoDate)
+            let today = day.isDate(memoDate, inSameDayAs: now)
+            
+            if today {
                 let date = DateFormatter.todayFormat.string(from: row.date)
+                cell.date.text = date
+            } else if startWeek < memoDate {
+                let date = DateFormatter.thisWeekFormat.string(from: row.date)
                 cell.date.text = date
             } else {
                 let date = DateFormatter.defaultFormat.string(from: row.date)
                 cell.date.text = date
             }
-            
 
             cell.title.text = row.title
             cell.title.font = UIFont().binggraeBoldSmall
@@ -281,16 +307,33 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
             
             let row = notFixedTasks[indexPath.row]
             
-            let format = DateFormatter()
-            format.dateFormat = "yyyy.MM.dd HH:mm"
+            //date formatter 선택
+            let now = convertDateToLocalTime(Date())
+            let startWeek = convertDateToLocalTime(now.startOfWeek!)
+            let memoDate = convertDateToLocalTime(row.date)
             
-            //let date = format.string(from: row.date)
-            let date = DateFormatter.customFormat.string(from: row.date)
             
+            var day = Calendar.current
+            day.locale = Locale(identifier: "ko_KR")
+            day.timeZone = TimeZone(abbreviation: "KST")!
+            
+            //let today = day.isDateInToday(memoDate)
+            let today = day.isDate(memoDate, inSameDayAs: now)
+            
+            if today {
+                let date = DateFormatter.todayFormat.string(from: row.date)
+                cell.date.text = date
+            } else if startWeek < memoDate {
+                let date = DateFormatter.thisWeekFormat.string(from: row.date)
+                cell.date.text = date
+            } else {
+                let date = DateFormatter.defaultFormat.string(from: row.date)
+                cell.date.text = date
+            }
+
             cell.title.text = row.title
             cell.title.font = UIFont().binggraeBoldSmall
             
-            cell.date.text = date
             cell.date.font = UIFont().binggrae
             
             cell.content.text = row.content

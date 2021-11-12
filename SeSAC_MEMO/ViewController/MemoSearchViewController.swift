@@ -14,6 +14,7 @@ class MemoSearchViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
+    
     let localRealm = try! Realm()
     
     var tasks: Results<UserMemoList>!
@@ -34,14 +35,17 @@ class MemoSearchViewController: UIViewController {
         
         fixedTasks = localRealm.objects(UserMemoList.self).filter("isFixed == true").sorted(byKeyPath: "date", ascending: false)
         
-        
-
-
 
     }
     
     func reloadView() {
         tableView.reloadData()
+    }
+    
+    func convertDateToLocalTime(_ date: Date) -> Date {
+        let timeZoneOffset = Double(TimeZone.current.secondsFromGMT(for: date))
+
+        return Calendar.current.date(byAdding: .second, value: Int(timeZoneOffset), to: date)!
     }
 }
 
@@ -54,7 +58,12 @@ extension MemoSearchViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewHeaderFooterView()
         }
         
-        header.headerLabel.text = "\(tasks.count)개 찾음"
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        let price = tasks.count
+        let result = numberFormatter.string(for: price)!
+        
+        header.headerLabel.text = "\(result)개 찾음"
         header.headerLabel.font = UIFont().binggraeBold
         header.headerLabel.textColor = .black
         
@@ -105,7 +114,8 @@ extension MemoSearchViewController: UITableViewDelegate, UITableViewDataSource {
                     
                 } else {
                     print("고정 기능은 최대 5개까지 가능합니다")
-                    //추후 알림 기능 추가하면 좋을듯
+                    let alert = UIAlertController().alertFixOver
+                    self.present(alert, animated: false, completion: nil)
                 }
                 
             }
@@ -122,13 +132,26 @@ extension MemoSearchViewController: UITableViewDelegate, UITableViewDataSource {
         
         let delete = UIContextualAction(style: .normal, title: "delete") { (UIContextualAction, UIView, success: @escaping (Bool) -> Void) in
             
-            try! self.localRealm.write {
-
-                self.localRealm.delete(self.tasks[indexPath.row]) //realm이 먼저 지워지면 위험할 수 있다.
-                self.reloadView()
+            let alert = UIAlertController(title: "확인", message: "정말 메모를 삭제하시겠습니까?", preferredStyle: UIAlertController.Style.alert)
+            let okAction = UIAlertAction(title: "네", style: .default) {
+                (action) in
+                
+                try! self.localRealm.write {
+                    self.localRealm.delete(self.tasks[indexPath.row])
+                    self.reloadView()
+                }
+                
             }
+            let cancelAction = UIAlertAction(title: "아니요", style: .default, handler: nil)
+            alert.addAction(okAction)
+            alert.addAction(cancelAction)
+            
+            
+            self.present(alert, animated: false, completion: nil)
+
 
             success(true)
+            
         }
         delete.image = UIImage(systemName: "trash.fill")
         delete.backgroundColor = UIColor(named: "MemoRed")
@@ -137,17 +160,16 @@ extension MemoSearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("MemoEdit으로 화면전환")
-        //선택된 셀의 메모를 편집할 수 있는 MemoEditViewController로의 화면전환
-        let storyBoard = UIStoryboard(name: "MemoEdit", bundle: nil)
+        print("select")
+        let storyBoard = UIStoryboard(name: "MemoAdd", bundle: nil)
         
-        guard let vc = storyBoard.instantiateViewController(withIdentifier: MemoEditViewController.identifier) as? MemoEditViewController else { return }
+        guard let vc = storyBoard.instantiateViewController(withIdentifier: MemoAddViewController.identifier) as? MemoAddViewController else { return }
         
 
         vc.task = tasks[indexPath.row]
 
         
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.present(vc, animated: true, completion: nil)
     }
     
     
@@ -172,8 +194,29 @@ extension MemoSearchViewController: UITableViewDelegate, UITableViewDataSource {
         cell.title.attributedText = title
         cell.content.attributedText = content
         
-        let date = DateFormatter.customFormat.string(from: row.date)
-        cell.date.text = date
+        //date formatter 선택
+        let now = convertDateToLocalTime(Date())
+        let startWeek = convertDateToLocalTime(now.startOfWeek!)
+        let memoDate = convertDateToLocalTime(row.date)
+        
+        
+        var day = Calendar.current
+        day.locale = Locale(identifier: "ko_KR")
+        day.timeZone = TimeZone(abbreviation: "KST")!
+        
+        //let today = day.isDateInToday(memoDate)
+        let today = day.isDate(memoDate, inSameDayAs: now)
+        
+        if today {
+            let date = DateFormatter.todayFormat.string(from: row.date)
+            cell.date.text = date
+        } else if startWeek < memoDate {
+            let date = DateFormatter.thisWeekFormat.string(from: row.date)
+            cell.date.text = date
+        } else {
+            let date = DateFormatter.defaultFormat.string(from: row.date)
+            cell.date.text = date
+        }
         
         return cell
         

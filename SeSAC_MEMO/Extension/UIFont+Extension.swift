@@ -22,11 +22,11 @@ extension UIFont {
     }
     
     var binggraeBold: UIFont {
-        return UIFont(name: "Binggrae-Bold", size: 25)!
+        return UIFont(name: "Binggrae-Bold", size: 22)!
     }
     
     var binggraeBoldLarge: UIFont {
-        return UIFont(name: "Binggrae-Bold", size: 30)!
+        return UIFont(name: "Binggrae-Bold", size: 25)!
     }
 }
 

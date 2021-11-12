@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DCACD9BF273D25B700775088 /* MemoEdit.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCACD9BE273D25B700775088 /* MemoEdit.storyboard */; };
-		DCACD9C1273D25E600775088 /* MemoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCACD9C0273D25E600775088 /* MemoEditViewController.swift */; };
 		DCACD9C3273D53B600775088 /* MemoSearch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCACD9C2273D53B600775088 /* MemoSearch.storyboard */; };
 		DCACD9C5273D53D800775088 /* MemoSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCACD9C4273D53D800775088 /* MemoSearchViewController.swift */; };
 		DCACD9C7273DFF3100775088 /* Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCACD9C6273DFF3100775088 /* Alert+Extension.swift */; };
+		DCACD9C9273E3FCD00775088 /* MemoTutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCACD9C8273E3FCD00775088 /* MemoTutorial.storyboard */; };
+		DCACD9CB273E41EB00775088 /* MemoTutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCACD9CA273E41EB00775088 /* MemoTutorialViewController.swift */; };
 		DCB6235B2739031400400A7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB6235A2739031400400A7C /* AppDelegate.swift */; };
 		DCB6235D2739031400400A7C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB6235C2739031400400A7C /* SceneDelegate.swift */; };
 		DCB6235F2739031400400A7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB6235E2739031400400A7C /* ViewController.swift */; };
@@ -35,11 +35,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		DCACD9BE273D25B700775088 /* MemoEdit.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MemoEdit.storyboard; sourceTree = "<group>"; };
-		DCACD9C0273D25E600775088 /* MemoEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditViewController.swift; sourceTree = "<group>"; };
 		DCACD9C2273D53B600775088 /* MemoSearch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MemoSearch.storyboard; sourceTree = "<group>"; };
 		DCACD9C4273D53D800775088 /* MemoSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoSearchViewController.swift; sourceTree = "<group>"; };
 		DCACD9C6273DFF3100775088 /* Alert+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alert+Extension.swift"; sourceTree = "<group>"; };
+		DCACD9C8273E3FCD00775088 /* MemoTutorial.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MemoTutorial.storyboard; sourceTree = "<group>"; };
+		DCACD9CA273E41EB00775088 /* MemoTutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MemoTutorialViewController.swift; path = SeSAC_MEMO/ViewController/MemoTutorialViewController.swift; sourceTree = SOURCE_ROOT; };
 		DCB623572739031400400A7C /* SeSAC_MEMO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSAC_MEMO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCB6235A2739031400400A7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCB6235C2739031400400A7C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -117,8 +117,9 @@
 				DCB6238C273A4B4B00400A7C /* MemoAdd.storyboard */,
 				DCACD9C2273D53B600775088 /* MemoSearch.storyboard */,
 				DCB6238427393E8C00400A7C /* MemoTableViewHeader.xib */,
-				DCACD9BE273D25B700775088 /* MemoEdit.storyboard */,
 				DCB623652739031500400A7C /* LaunchScreen.storyboard */,
+				DCACD9C8273E3FCD00775088 /* MemoTutorial.storyboard */,
+				DCACD9CA273E41EB00775088 /* MemoTutorialViewController.swift */,
 			);
 			path = StoryBoard;
 			sourceTree = "<group>";
@@ -128,7 +129,6 @@
 			children = (
 				DCB623722739177F00400A7C /* MemoListViewController.swift */,
 				DCB6238E273A4CEB00400A7C /* MemoAddViewController.swift */,
-				DCACD9C0273D25E600775088 /* MemoEditViewController.swift */,
 				DCACD9C4273D53D800775088 /* MemoSearchViewController.swift */,
 			);
 			path = ViewController;
@@ -237,8 +237,8 @@
 			files = (
 				DCB6238D273A4B4B00400A7C /* MemoAdd.storyboard in Resources */,
 				DCB623712739147B00400A7C /* MemoList.storyboard in Resources */,
+				DCACD9C9273E3FCD00775088 /* MemoTutorial.storyboard in Resources */,
 				DCACD9C3273D53B600775088 /* MemoSearch.storyboard in Resources */,
-				DCACD9BF273D25B700775088 /* MemoEdit.storyboard in Resources */,
 				DCB623672739031500400A7C /* LaunchScreen.storyboard in Resources */,
 				DCB6238527393E8C00400A7C /* MemoTableViewHeader.xib in Resources */,
 				DCB623642739031500400A7C /* Assets.xcassets in Resources */,
@@ -260,13 +260,13 @@
 				DCB623732739177F00400A7C /* MemoListViewController.swift in Sources */,
 				DCB6238727393F7000400A7C /* MemoTableViewHeader.swift in Sources */,
 				DCB6235F2739031400400A7C /* ViewController.swift in Sources */,
-				DCACD9C1273D25E600775088 /* MemoEditViewController.swift in Sources */,
 				DCB6238B273A45AA00400A7C /* MemoTableViewCell.swift in Sources */,
 				DCB6238F273A4CEB00400A7C /* MemoAddViewController.swift in Sources */,
 				DCB6235B2739031400400A7C /* AppDelegate.swift in Sources */,
 				DCB6237B2739188700400A7C /* RealmModel.swift in Sources */,
 				DCB6235D2739031400400A7C /* SceneDelegate.swift in Sources */,
 				DCB623BE273BA0E500400A7C /* UIFont+Extension.swift in Sources */,
+				DCACD9CB273E41EB00775088 /* MemoTutorialViewController.swift in Sources */,
 				DCB62391273A594400400A7C /* Date+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
