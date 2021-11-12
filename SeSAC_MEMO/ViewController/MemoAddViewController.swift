@@ -18,16 +18,12 @@ class MemoAddViewController: UIViewController {
     let localRealm = try! Realm()
 
     @IBOutlet weak var memoTextView: UITextView!
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //self.navigationController?.setNavigationBarHidden(false, animated: false)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(closeButtonClicked))
         navigationItem.leftBarButtonItem?.tintColor = UIColor(named: "MemoOrange")
-
-
 
         
         let shareButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareButtonClicked))
