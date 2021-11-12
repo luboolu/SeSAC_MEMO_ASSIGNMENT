@@ -33,6 +33,7 @@ class MemoEditViewController: UIViewController {
         memoTextView.text = [task.title, task.content].joined(separator: "\n")
         memoTextView.font = UIFont().binggraeMedium
         // Do any additional setup after loading the view.
+        
     }
     
     @objc func closeButtonClicked() {

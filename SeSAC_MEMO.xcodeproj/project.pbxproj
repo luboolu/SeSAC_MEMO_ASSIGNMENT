@@ -11,6 +11,7 @@
 		DCACD9C1273D25E600775088 /* MemoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCACD9C0273D25E600775088 /* MemoEditViewController.swift */; };
 		DCACD9C3273D53B600775088 /* MemoSearch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCACD9C2273D53B600775088 /* MemoSearch.storyboard */; };
 		DCACD9C5273D53D800775088 /* MemoSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCACD9C4273D53D800775088 /* MemoSearchViewController.swift */; };
+		DCACD9C7273DFF3100775088 /* Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCACD9C6273DFF3100775088 /* Alert+Extension.swift */; };
 		DCB6235B2739031400400A7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB6235A2739031400400A7C /* AppDelegate.swift */; };
 		DCB6235D2739031400400A7C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB6235C2739031400400A7C /* SceneDelegate.swift */; };
 		DCB6235F2739031400400A7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB6235E2739031400400A7C /* ViewController.swift */; };
@@ -38,6 +39,7 @@
 		DCACD9C0273D25E600775088 /* MemoEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditViewController.swift; sourceTree = "<group>"; };
 		DCACD9C2273D53B600775088 /* MemoSearch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MemoSearch.storyboard; sourceTree = "<group>"; };
 		DCACD9C4273D53D800775088 /* MemoSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoSearchViewController.swift; sourceTree = "<group>"; };
+		DCACD9C6273DFF3100775088 /* Alert+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alert+Extension.swift"; sourceTree = "<group>"; };
 		DCB623572739031400400A7C /* SeSAC_MEMO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSAC_MEMO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCB6235A2739031400400A7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCB6235C2739031400400A7C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 			children = (
 				DCB62390273A594400400A7C /* Date+Extension.swift */,
 				DCB623BD273BA0E500400A7C /* UIFont+Extension.swift */,
+				DCACD9C6273DFF3100775088 /* Alert+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -253,6 +256,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCACD9C5273D53D800775088 /* MemoSearchViewController.swift in Sources */,
+				DCACD9C7273DFF3100775088 /* Alert+Extension.swift in Sources */,
 				DCB623732739177F00400A7C /* MemoListViewController.swift in Sources */,
 				DCB6238727393F7000400A7C /* MemoTableViewHeader.swift in Sources */,
 				DCB6235F2739031400400A7C /* ViewController.swift in Sources */,

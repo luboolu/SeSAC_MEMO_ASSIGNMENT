@@ -69,19 +69,11 @@ class MemoListViewController: UIViewController {
         
         navigationItem.searchController = searchController
         
-//        let cancel = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction(handler: { _ in // cancel action ]
-//            print("search controller cancle")
-//        }))
-//        self.navigationItem.rightBarButtonItem = cancel
-//
-
         searchController.searchResultsUpdater  = resultsController //searchResultsController를 사용하려면 self가 아니라 데이터를 보여줄 뷰 컨트롤러를 적어줘야함
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.searchBarStyle = UISearchBar.Style.prominent
         searchController.searchBar.sizeToFit()
         searchController.searchBar.delegate = self
-        
- 
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -93,6 +85,12 @@ class MemoListViewController: UIViewController {
         memoListLabel.text = "\(tasks.count)개의 메모"
         tableView.reloadData()
         print("====================")
+    }
+    
+    func convertDateToLocalTime(_ date: Date) -> Date {
+        let timeZoneOffset = Double(TimeZone.current.secondsFromGMT(for: date))
+
+        return Calendar.current.date(byAdding: .second, value: Int(timeZoneOffset), to: date)!
     }
     
  
@@ -151,7 +149,8 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
                     
                 } else {
                     print("고정 기능은 최대 5개까지 가능합니다")
-                    //추후 알림 기능 추가하면 좋을듯
+                    let alert = UIAlertController().alertFixOver
+                    self.present(alert, animated: false, completion: nil)
                 }
             }
 
@@ -167,14 +166,27 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
         
         let delete = UIContextualAction(style: .normal, title: "delete") { (UIContextualAction, UIView, success: @escaping (Bool) -> Void) in
             
-            try! self.localRealm.write {
-                if indexPath.section == 0 {
-                    self.localRealm.delete(self.fixedTasks[indexPath.row])
-                } else {
-                    self.localRealm.delete(self.notFixedTasks[indexPath.row])
+            
+            let alert = UIAlertController(title: "확인", message: "정말 메모를 삭제하시겠습니까?", preferredStyle: UIAlertController.Style.alert)
+            let okAction = UIAlertAction(title: "네", style: .default) {
+                (action) in
+                
+                try! self.localRealm.write {
+                    if indexPath.section == 0 {
+                        self.localRealm.delete(self.fixedTasks[indexPath.row])
+                    } else {
+                        self.localRealm.delete(self.notFixedTasks[indexPath.row])
+                    }
+                    self.reloadView()
                 }
-                self.reloadView()
+                
             }
+            let cancelAction = UIAlertAction(title: "아니요", style: .default, handler: nil)
+            alert.addAction(okAction)
+            alert.addAction(cancelAction)
+            
+            
+            self.present(alert, animated: false, completion: nil)
 
             success(true)
         }
@@ -243,14 +255,23 @@ extension MemoListViewController: UITableViewDelegate, UITableViewDataSource {
             
             let row = fixedTasks[indexPath.row]
             
-
-            //let date = format.string(from: row.date)
-            let date = DateFormatter.customFormat.string(from: row.date)
+            //date formatter 선택
+            let now = convertDateToLocalTime(Date())
+            let startWeek = convertDateToLocalTime(now.startOfWeek!)
+            let memoDate = convertDateToLocalTime(row.date)
             
+            if startWeek < memoDate {
+                let date = DateFormatter.todayFormat.string(from: row.date)
+                cell.date.text = date
+            } else {
+                let date = DateFormatter.defaultFormat.string(from: row.date)
+                cell.date.text = date
+            }
+            
+
             cell.title.text = row.title
             cell.title.font = UIFont().binggraeBoldSmall
             
-            cell.date.text = date
             cell.date.font = UIFont().binggrae
             
             cell.content.text = row.content

@@ -18,7 +18,8 @@ class MemoSearchViewController: UIViewController {
     
     var tasks: Results<UserMemoList>!
     var fixedTasks: Results<UserMemoList>!
-    var notFixedTasks: Results<UserMemoList>!
+    var searchText: String = ""
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +34,6 @@ class MemoSearchViewController: UIViewController {
         
         fixedTasks = localRealm.objects(UserMemoList.self).filter("isFixed == true").sorted(byKeyPath: "date", ascending: false)
         
-        notFixedTasks = localRealm.objects(UserMemoList.self).filter("isFixed == false").sorted(byKeyPath: "date", ascending: false)
         
 
 
@@ -110,10 +110,6 @@ extension MemoSearchViewController: UITableViewDelegate, UITableViewDataSource {
                 
             }
             
-
-
-            
-
         }
         fix.image = UIImage(systemName: "pin.fill")
         fix.backgroundColor = UIColor(named: "MemoOrange")
@@ -165,8 +161,16 @@ extension MemoSearchViewController: UITableViewDelegate, UITableViewDataSource {
         
         let row = tasks[indexPath.row]
         
-        cell.title.text = row.title
-        cell.content.text = row.content
+        //검색된 단어를 다른 색상으로 표현해주기 위한 arrtibute
+        let title = NSMutableAttributedString(string: row.title)
+        let content = NSMutableAttributedString(string: row.content)
+        
+        title.addAttribute(.foregroundColor, value: UIColor(named: "MemoOrange"), range: (row.title as NSString).range(of: self.searchText))
+        content.addAttribute(.foregroundColor, value: UIColor(named: "MemoOrange"), range: (row.content as NSString).range(of: self.searchText))
+        
+        
+        cell.title.attributedText = title
+        cell.content.attributedText = content
         
         let date = DateFormatter.customFormat.string(from: row.date)
         cell.date.text = date
@@ -189,6 +193,7 @@ extension MemoSearchViewController: UISearchControllerDelegate, UISearchResultsU
             
             //검색어 입력 도중 ResultTableView가 갱신되지 않게함
             if tasks.count > 0 {
+                self.searchText = text
                 tableView.reloadData()
             }
             
